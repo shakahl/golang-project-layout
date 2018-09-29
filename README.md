@@ -14,7 +14,13 @@ If you need help with naming, formatting and style start by running [`gofmt`](ht
 * https://blog.golang.org/package-names
 * https://github.com/golang/go/wiki/CodeReviewComments
 
-See [Go Project Layout](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) for additional background information.
+See [`Go Project Layout`](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) for additional background information.
+
+More about naming and organizing packages as well as other code structure recommendations:
+* [GopherCon EU 2018: Peter Bourgon - Best Practices for Industrial Programming](https://www.youtube.com/watch?v=PTE4VJIdHPg)
+* [GopherCon Russia 2018: Ashley McNamara + Brian Ketelsen - Go best practices.](https://www.youtube.com/watch?v=MzTcsI6tn-0)
+* [GopherCon 2017: Edward Muller - Go Anti-Patterns](https://www.youtube.com/watch?v=ltqV6pDKZD8)
+* [GopherCon 2018: Kat Zien - How Do You Structure Your Go Apps](https://www.youtube.com/watch?v=oL6JBUk6tj0)
 
 ## Go Directories
 
@@ -38,9 +44,9 @@ Put your actual application code in the `/internal/app` directory (e.g., `/inter
 
 ### `/pkg`
 
-Library code that's safe to use by external applications (e.g., `/pkg/mypubliclib`).
+Library code that's ok to use by external applications (e.g., `/pkg/mypubliclib`). Other projects will import these libraries expecting them to work, so think twice before you put something here :-)
 
-Other projects will import these libraries expecting them to work, so think twice before you put something here :-)
+It's also a way to group Go code in one place when your root directory contains lots of non-Go components and directories making it easier to run various Go tool (as mentioned in the [`Best Practices for Industrial Programming`](https://www.youtube.com/watch?v=PTE4VJIdHPg) from GopherCon EU 2018).
 
 See the [`/pkg`](pkg/README.md) directory if you want to see which popular Go repos use this project layout pattern. This is a common layout pattern, but it's not universally accepted and some in the Go community don't recommend it. 
 
@@ -132,13 +138,21 @@ Git hooks.
 
 ### `/assets`
 
-Other assets to go along with your repository.
+Other assets to go along with your repository (images, logos, etc).
+
+### `/website`
+
+This is the place to put your project's website data if you are not using Github pages.
+
+See the [`/website`](website/README.md) directory for examples.
 
 ## Directories You Shouldn't Have
 
 ### `/src`
 
 Some Go projects do have a `src` folder, but it usually happens when the devs came from the Java world where it's a common pattern. If you can help yourself try not to adopt this Java pattern. You really don't want your Go code or Go projects to look like Java :-)
+
+Don't confuse the project level `/src` directory with the `/src` directory Go uses for its workspaces as described in [`How to Write Go Code`](https://golang.org/doc/code.html). The `$GOPATH` environment variable points to your (current) workspace (by default it points to `$HOME/go` on non-windows systems). This workspace includes the top level `/pkg`, `/bin` and `/src` directories. Your actual project ends up being a sub-directory under `/src`, so if you have the `/src` directory in your project the project path will look like this: `/some/path/to/workspace/src/your_project/src/your_code.go`. Note that with Go 1.11 it's possible to have your project outside of your `GOPATH`, but it still doesn't mean it's a good idea to use this layout pattern.
 
 
 ## Badges
